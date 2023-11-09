@@ -9,7 +9,7 @@
   Torneos
 </h1>
 <a href="{% url 'listar_torneos' %}">Ver todos</a>
-<a href="{% url 'ingresar_torneo' %}">Crear curso</a>
+<a href="{% url 'ingresar_torneo' %}">Agregar torneo</a>
 <br><br>
 <form action="{% url 'buscar_torneos' %}" method="post">
     {% csrf_token %}
