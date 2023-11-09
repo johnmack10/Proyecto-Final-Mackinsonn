@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block titulo %}
+Agregué jugador
+{% endblock titulo %}
+
+{% block contenido %}
+<h1 style="color:orange;">
+  inscripción jugador nuevo
+</h1>
+<form method="post">
+  {% csrf_token %}
+  {{ formulario.as_p }}
+  <input class="btn btn-success" type="submit" value="Ingresar jugador" />
+</form>
+<br>
+<a href="{% url 'listar_jugadores' %}">Ver todos los participantes</a>
+
+{% endblock contenido %}
