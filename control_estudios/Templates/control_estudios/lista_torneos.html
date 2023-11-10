@@ -24,12 +24,29 @@
 </form>
 <br>
 
-
-<ul>
-{% for torneo in torneos %}
-  <li>
-    {{ torneo.nombre_torneo }}, {{ torneo.fecha_comienzo }}
-  </li>
-{% endfor %}
-</ul>
+<table class="table">
+  <tbody>
+    <tr>
+      <th>Nombre</th>
+      <th>Fecha</th>
+      <th></th>
+      <th></th>
+    </tr>
+    {% for torneo in torneos %}
+    <tr>
+      <td>{{ torneo.nombre_torneo }} </td>
+      <td>{{ torneo.fecha_comienzo }} </td>
+      <td>
+        <a href="{% url 'editar_torneo' torneo.id %}">Editar</a>
+      </td> 
+      <td>
+        <form action="{% url 'eliminar_torneo' torneo.id %}" method="post">
+          {% csrf_token %}
+          <input type="submit" class="btn btn-link" value="eliminar"/>
+        </form>
+      </td>
+    </tr>  
+   {% endfor %}
+  </tbody>
+</table>
 {% endblock contenido %}

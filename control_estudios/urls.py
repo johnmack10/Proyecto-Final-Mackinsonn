@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 
-from control_estudios.views import (listar_torneos, ingresar_torneo, buscar_torneos,listar_jugadores,ingresar_jugador,buscar_jugadores,ingresar_al_ranking,listar_ranking)
+from control_estudios.views import (listar_torneos, ingresar_torneo, buscar_torneos,listar_jugadores,ingresar_jugador,buscar_jugadores,ingresar_al_ranking,listar_ranking,eliminar_torneo,editar_torneo)
 
 urlpatterns = [
     path("Torneos/", listar_torneos, name ="listar_torneos"),
@@ -12,6 +12,9 @@ urlpatterns = [
     path("Buscar-jugador/", buscar_jugadores, name="buscar_jugadores"),
     path("Nuevo-Ranking/", ingresar_al_ranking, name="ingresar_al_ranking"),
     path("Ranking/", listar_ranking, name="listar_ranking"),
+    path('Eliminar-Torneo/<int:id>/', eliminar_torneo, name="eliminar_torneo"),
+    path('Editar-Torneo/<int:id>/', editar_torneo, name="editar_torneo"),
+
     
 ]
 

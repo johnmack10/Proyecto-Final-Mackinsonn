@@ -142,3 +142,36 @@ def ingresar_al_ranking(request):
        context={'formulario': formulario}
    )
    return http_response
+
+def eliminar_torneo(request, id):
+   torneo = Torneo.objects.get(id=id)
+   if request.method == "POST":
+       torneo.delete()
+       url_exitosa = reverse('listar_torneos')
+       return redirect(url_exitosa)
+   
+
+def editar_torneo(request, id):
+   torneo = Torneo.objects.get(id=id)
+   if request.method == "POST":
+       formulario = Torneoformulario(request.POST)
+
+       if formulario.is_valid():
+           data = formulario.cleaned_data
+           torneo.nombre_torneo = data['nombre_torneo']
+           torneo.fecha_comienzo = data['fecha_comienzo']
+           torneo.save()
+           url_exitosa = reverse('listar_torneos')
+           return redirect(url_exitosa)
+   else:  # GET
+       inicial = {
+           'nombre': torneo.nombre_torneo,
+           'fecha': torneo.fecha_comienzo,
+       }
+       formulario = Torneoformulario(initial=inicial)
+   return render(
+       request=request,
+       template_name='control_estudios/formulario_torneo.html',
+       context={'formulario': formulario},
+   )
+
