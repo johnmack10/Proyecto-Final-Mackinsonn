@@ -1,17 +1,45 @@
 {% extends "base.html" %}
 
 {% block contenido %}
-<h1 style="color:orange;">
-  Ranking
-</h1>
-<a href="{% url 'listar_ranking' %}">Ver Ranking</a>
-<a href="{% url 'ingresar_al_ranking' %}">Crear Ranking</a>
-<br><br>
-<ul>
-{% for rank in ranking %}
-  <li>
-    {{ rank.nombre }}  {{ rank.apellido }} - {{ rank.torneos_jugados }} TORNEOS JUGADOS - {{ rank.cantidad_puntos }} PUNTOS
-  </li>
-{% endfor %}
-</ul>
+<section>
+ <div>
+   <h1>Lista del ranking</h1>
+   <a href="{% url 'crear_ranking' %}">Agregar jugador al ranking</a>
+   <br>
+
+   <table class="table">
+     <tbody>
+       <tr>
+         <th>ID</th>
+         <th>Nombre</th>
+         <th>Apellido</th>
+         <th>Puntos</th>
+         <td></td>
+         <td></td>
+         <td></td>
+       </tr>
+       {% for participante in object_list %}
+       <tr>
+         <td>{{ participante.id }}</td>
+         <td>{{ participante.nombre }}</td>
+         <td>{{ participante.apellido}}</td>
+         <td>{{ participante.cantidad_puntos }}</td>
+         <td>
+           <a href="{% url 'ver_ranking' participante.id %}">Ver</a>
+         </td>
+         <td>
+           <a href="{% url 'editar_ranking' participante.id %}">Editar</a>
+         </td>
+         <td>
+           <a href="{% url 'eliminar_ranking' participante.id %}">
+             <i class="bi bi-trash"></i>
+           </a>
+         </td>
+       </tr>
+       {% endfor %}
+     </tbody>
+   </table>
+
+ </div>
+</section>
 {% endblock contenido %}

@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.db.models import Q
+from django.views.generic import ListView, CreateView, DetailView, UpdateView,DeleteView
 
 from control_estudios.models import Jugador,Ranking, Torneo
 from control_estudios.forms import Torneoformulario,Jugadorformulario, Rankingformulario
@@ -52,7 +53,7 @@ def buscar_torneos(request):
        }
        http_response = render(
            request=request,
-           template_name='control_estudios/lista_torneos.html',
+           template_name='control_estudios/lista_jugadores.html',
            context=contexto,
        )
        return http_response
@@ -109,40 +110,6 @@ def buscar_jugadores(request):
        )
        return http_response
    
-def listar_ranking(request):
-    contexto = {
-    "ranking": Ranking.objects.all(),
-    }
-    http_response = render(
-        request=request,
-        template_name='control_estudios/lista_ranking.html',
-        context=contexto,
-    )
-    return http_response
-
-def ingresar_al_ranking(request):
-   if request.method == "POST":
-       formulario = Rankingformulario(request.POST)
-
-       if formulario.is_valid():
-           data = formulario.cleaned_data  
-           nombre = data["nombre"]
-           puntos = data["cantidad_puntos"]
-           torneos = data["torneos_jugados"]
-           apellido = data["apellido"]
-           ranking = Ranking(nombre=nombre, cantidad_puntos=puntos, torneos_jugados = torneos, apellido=apellido)  
-           ranking.save()  
-           url_exitosa = reverse('listar_ranking')  
-           return redirect(url_exitosa)
-   else:  
-       formulario = Rankingformulario()
-   http_response = render(
-       request=request,
-       template_name='control_estudios/formulario_ranking.html',
-       context={'formulario': formulario}
-   )
-   return http_response
-
 def eliminar_torneo(request, id):
    torneo = Torneo.objects.get(id=id)
    if request.method == "POST":
@@ -175,3 +142,25 @@ def editar_torneo(request, id):
        context={'formulario': formulario},
    )
 
+class RankingListView(ListView):
+   model = Ranking
+   template_name = 'control_estudios/lista_ranking.html'
+   def get_queryset(self):
+        queryset = super().get_queryset()
+        return sorted(queryset, key=lambda ranking: ranking.cantidad_puntos, reverse=True)
+class RankingCreateView(CreateView):
+   model = Ranking
+   fields = ('apellido', 'nombre', 'cantidad_puntos', 'torneos_jugados')
+   success_url = reverse_lazy('lista_ranking')
+   
+class RankingDetailView(DetailView):
+   model = Ranking
+   success_url = reverse_lazy('lista_ranking')
+   
+class RankingUpdateView(UpdateView):
+   model = Ranking
+   fields = ('apellido', 'nombre', 'cantidad_puntos', 'torneos_jugados')
+   success_url = reverse_lazy('lista_ranking')
+class RankingDeleteView(DeleteView):
+   model = Ranking
+   success_url = reverse_lazy('lista_ranking')

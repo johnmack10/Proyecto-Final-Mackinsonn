@@ -23,4 +23,5 @@ urlpatterns = [
     #path("" , saludar), 
     #path("Saludo con fecha/", saludar_con_fecha),
     path("", saludar_con_html, name = "inicio"),
+    path("perfiles/", include("perfiles.urls"))
 ]

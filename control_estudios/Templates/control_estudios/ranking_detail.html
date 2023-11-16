@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block contenido %}
+
+<p>
+ <strong>Apellido:</strong> {{object.apellido}}
+</p>
+<p>
+ <strong>Nombre:</strong> {{object.nombre}}
+</p>
+<p>
+ <strong>Cantidad de puntos:</strong> {{object.cantidad_puntos}}
+</p>
+<p>
+ <strong>cantidad de torneos jugados:</strong> {{object.torneos_jugados}}
+</p>
+
+
+<br>
+<a href="{% url 'lista_ranking' %}">Volver lista</a>
+
+{% endblock contenido %}
