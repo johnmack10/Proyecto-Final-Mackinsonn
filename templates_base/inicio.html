@@ -1,11 +1,48 @@
+
 {% extends "base.html" %}
 
 {% block titulo %}
-<title>Tenis - Inicio </title>
+  <title>Bienvenido al Mundo del Tenis</title>
 {% endblock titulo %}
 
-
 {% block contenido %}
-<h1>Bienvenidos a Todo de tenis</h1>
+  <section class="hero-section text-center">
+    <div class="container">
+      <h1 class="display-4">Descubre el Mundo del Tenis</h1>
+      <p class="lead mb-4">Noticias, jugadores destacados y torneos emocionantes te esperan.</p>
+    </div>
+  </section>
 
+  <section class="features-section bg-light text-center">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4">
+          <i class="bi bi-newspaper fa-4x text-primary mb-4"></i>
+          <h2 class="h4">Noticias</h2>
+          <p class="text-muted">Mantente actualizado con las últimas noticias del mundo del tenis.</p>
+          <a href="" class="btn btn-outline-primary btn-sm">Leer Más</a>
+        </div>
+        <div class="col-lg-4">
+          <i class="bi bi-person fa-4x text-primary mb-4"></i>
+          <h2 class="h4">Jugadores</h2>
+          <p class="text-muted">Descubre información sobre tus jugadores favoritos.</p>
+          <a href="{% url 'listar_jugadores' %}" class="btn btn-outline-primary btn-sm">Ver Jugadores</a>
+        </div>
+        <div class="col-lg-4">
+          <i class="bi bi-trophy fa-4x text-primary mb-4"></i>
+          <h2 class="h4">Torneos</h2>
+          <p class="text-muted">Encuentra torneos cercanos y sigue los resultados en vivo.</p>
+          <a href="{% url 'listar_torneos' %}" class="btn btn-outline-primary btn-sm">Explorar Torneos</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section text-center">
+    <div class="container">
+      <h2 class="display-4 mb-4">Únete a la Comunidad del Tenis</h2>
+      <p class="lead mb-4">Regístrate y comparte tu pasión por el deporte blanco.</p>
+      <a href="{% url 'registro' %}" class="btn btn-primary btn-lg">Regístrate Gratis</a>
+    </div>
+  </section>
 {% endblock contenido %}

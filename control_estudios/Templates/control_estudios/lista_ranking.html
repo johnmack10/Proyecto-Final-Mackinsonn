@@ -28,12 +28,16 @@
            <a href="{% url 'ver_ranking' participante.id %}">Ver</a>
          </td>
          <td>
+           {% if user == participante.creador %}
            <a href="{% url 'editar_ranking' participante.id %}">Editar</a>
-         </td>
+           {% endif %}
+          </td>
          <td>
+          {% if user == participante.creador %}
            <a href="{% url 'eliminar_ranking' participante.id %}">
              <i class="bi bi-trash"></i>
            </a>
+           {% endif %}
          </td>
        </tr>
        {% endfor %}

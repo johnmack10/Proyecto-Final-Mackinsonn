@@ -2,9 +2,11 @@ from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from django.db.models import Q
 from django.views.generic import ListView, CreateView, DetailView, UpdateView,DeleteView
-
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from control_estudios.models import Jugador,Ranking, Torneo
 from control_estudios.forms import Torneoformulario,Jugadorformulario, Rankingformulario
+
 
 def listar_torneos(request):
     contexto = {
@@ -18,7 +20,7 @@ def listar_torneos(request):
     return http_response
 
 
-
+@login_required
 def ingresar_torneo(request):
    if request.method == "POST":
        formulario = Torneoformulario(request.POST)
@@ -27,7 +29,7 @@ def ingresar_torneo(request):
            data = formulario.cleaned_data  
            nombre = data["nombre_torneo"]
            comision = data["fecha_comienzo"]
-           curso = Torneo(nombre_torneo=nombre, fecha_comienzo=comision)  
+           curso = Torneo(nombre_torneo=nombre, fecha_comienzo=comision, creador=request.user)  
            curso.save()  
 
            url_exitosa = reverse('listar_torneos')  
@@ -53,11 +55,11 @@ def buscar_torneos(request):
        }
        http_response = render(
            request=request,
-           template_name='control_estudios/lista_jugadores.html',
+           template_name='control_estudios/lista_torneos.html',
            context=contexto,
        )
        return http_response
-   
+@login_required
 def listar_jugadores(request):
     contexto = {
     "jugadores": Jugador.objects.all(),
@@ -69,6 +71,7 @@ def listar_jugadores(request):
     )
     return http_response
 
+@login_required
 def ingresar_jugador(request):
    if request.method == "POST":
        formulario = Jugadorformulario(request.POST)
@@ -79,7 +82,7 @@ def ingresar_jugador(request):
            apellido = data["apellido"]
            nacimiento = data["fecha_nacimiento"]
            telefono = data["telefono"]
-           curso = Jugador(nombre=nombre, apellido=apellido, fecha_nacimiento=nacimiento,telefono=telefono) 
+           curso = Jugador(nombre=nombre, apellido=apellido, fecha_nacimiento=nacimiento,telefono=telefono, creador=request.user) 
            curso.save()  
 
            url_exitosa = reverse('listar_jugadores')  
@@ -92,7 +95,7 @@ def ingresar_jugador(request):
        context={'formulario': formulario}
    )
    return http_response
-
+@login_required
 def buscar_jugadores(request):
    if request.method == "POST":
        data = request.POST
@@ -110,6 +113,7 @@ def buscar_jugadores(request):
        )
        return http_response
    
+@login_required
 def eliminar_torneo(request, id):
    torneo = Torneo.objects.get(id=id)
    if request.method == "POST":
@@ -117,7 +121,7 @@ def eliminar_torneo(request, id):
        url_exitosa = reverse('listar_torneos')
        return redirect(url_exitosa)
    
-
+@login_required
 def editar_torneo(request, id):
    torneo = Torneo.objects.get(id=id)
    if request.method == "POST":
@@ -148,19 +152,25 @@ class RankingListView(ListView):
    def get_queryset(self):
         queryset = super().get_queryset()
         return sorted(queryset, key=lambda ranking: ranking.cantidad_puntos, reverse=True)
-class RankingCreateView(CreateView):
+class RankingCreateView(LoginRequiredMixin,CreateView):
    model = Ranking
-   fields = ('apellido', 'nombre', 'cantidad_puntos', 'torneos_jugados')
+   fields = ('apellido', 'nombre', 'cantidad_puntos')
    success_url = reverse_lazy('lista_ranking')
+   
+   def form_valid(self, form):
+        self.object = form.save()
+        self.object.creador = self.request.user
+        self.object.save()
+        return super().form_valid(form)
    
 class RankingDetailView(DetailView):
    model = Ranking
    success_url = reverse_lazy('lista_ranking')
    
-class RankingUpdateView(UpdateView):
+class RankingUpdateView(LoginRequiredMixin,UpdateView):
    model = Ranking
    fields = ('apellido', 'nombre', 'cantidad_puntos', 'torneos_jugados')
    success_url = reverse_lazy('lista_ranking')
-class RankingDeleteView(DeleteView):
+class RankingDeleteView(LoginRequiredMixin,DeleteView):
    model = Ranking
    success_url = reverse_lazy('lista_ranking')

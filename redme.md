@@ -26,4 +26,6 @@ username:john
 contraseña:1234
 
 # Usuarios normales
-??
+username:sofiro, Marii
+contraseña:1234123j
+
