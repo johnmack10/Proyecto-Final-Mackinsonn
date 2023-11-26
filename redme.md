@@ -29,3 +29,8 @@ contraseña:1234
 username:sofiro, Marii
 contraseña:1234123j
 
+Link excel (Test funcionales) :
+https://docs.google.com/spreadsheets/d/1S1LpHfV0xbINLW6LX0Of0NbWNiyjS1ptHXfZUrU5xog/edit#gid=2125215559
+
+Link video demostrativo:
+https://youtu.be/US8_KHbogpc
