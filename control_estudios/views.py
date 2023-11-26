@@ -59,7 +59,7 @@ def buscar_torneos(request):
            context=contexto,
        )
        return http_response
-@login_required
+
 def listar_jugadores(request):
     contexto = {
     "jugadores": Jugador.objects.all(),
@@ -95,7 +95,7 @@ def ingresar_jugador(request):
        context={'formulario': formulario}
    )
    return http_response
-@login_required
+
 def buscar_jugadores(request):
    if request.method == "POST":
        data = request.POST
@@ -145,6 +145,41 @@ def editar_torneo(request, id):
        template_name='control_estudios/formulario_torneo.html',
        context={'formulario': formulario},
    )
+   
+@login_required
+def eliminar_jugador(request, id):
+    jugador = Jugador.objects.get(id=id)
+    if request.method == 'POST':
+        jugador.delete()
+        return redirect('listar_jugadores')
+   
+@login_required
+def editar_jugador(request, id):
+   jugador = Jugador.objects.get(id=id)
+   if request.method == "POST":
+       formulario = Jugadorformulario(request.POST)
+
+       if formulario.is_valid():
+           data = formulario.cleaned_data
+           jugador.nombre = data['nombre']
+           jugador.apellido = data['apellido']
+           jugador.telefono = data["telefono"]
+           jugador.save()
+           url_exitosa = reverse('listar_jugadores')
+           return redirect(url_exitosa)
+   else:  # GET
+       inicial = {
+           'nombre': jugador.nombre,
+           'apellido': jugador.apellido,
+           'telefono': jugador.telefono,
+       }
+       formulario = Jugadorformulario(initial=inicial)
+   return render(
+       request=request,
+       template_name='control_estudios/formulario_jugador.html',
+       context={'formulario': formulario},
+   )
+
 
 class RankingListView(ListView):
    model = Ranking
@@ -152,9 +187,10 @@ class RankingListView(ListView):
    def get_queryset(self):
         queryset = super().get_queryset()
         return sorted(queryset, key=lambda ranking: ranking.cantidad_puntos, reverse=True)
+
 class RankingCreateView(LoginRequiredMixin,CreateView):
    model = Ranking
-   fields = ('apellido', 'nombre', 'cantidad_puntos')
+   fields = ('nombre', 'apellido', 'cantidad_puntos', 'torneos_jugados')
    success_url = reverse_lazy('lista_ranking')
    
    def form_valid(self, form):
@@ -169,7 +205,7 @@ class RankingDetailView(DetailView):
    
 class RankingUpdateView(LoginRequiredMixin,UpdateView):
    model = Ranking
-   fields = ('apellido', 'nombre', 'cantidad_puntos', 'torneos_jugados')
+   fields = ('nombre', 'apellido', 'cantidad_puntos', 'torneos_jugados')
    success_url = reverse_lazy('lista_ranking')
 class RankingDeleteView(LoginRequiredMixin,DeleteView):
    model = Ranking

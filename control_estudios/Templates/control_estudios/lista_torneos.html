@@ -34,24 +34,23 @@
     </tr>
     {% for torneo in torneos %}
     <tr>
-      <td>{{ torneo.nombre_torneo }} </td>
-      <td>{{ torneo.fecha_comienzo }} </td>
+      <td>{{ torneo.nombre_torneo }}</td>
+      <td>{{ torneo.fecha_comienzo }}</td>
       <td>
         {% if user == torneo.creador %}
-        <a href="{% url 'editar_torneo' torneo.id %}">Editar</a>
+        <a class="btn btn-link" href="{% url 'editar_torneo' torneo.id %}">editar</a>
         {% endif %}
-      </td> 
+      </td>
       <td>
         {% if user == torneo.creador %}
-        {% csrf_token %}
-        <a href="{% url 'eliminar_torneo' torneo.id %}">
+        <form action="{% url 'eliminar_torneo' torneo.id %}" method="post">
           {% csrf_token %}
-          <i class="bi bi-trash"></i>
-        </a>
+          <input type="submit" class="btn btn-link" value="eliminar"/>
+        </form>
         {% endif %}
-      </td> 
-    </tr>  
-   {% endfor %}
+      </td>
+    </tr>
+    {% endfor %}
   </tbody>
 </table>
 {% endblock contenido %}

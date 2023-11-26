@@ -5,25 +5,45 @@
 {% endblock titulo %}
 
 {% block contenido %}
+<section>
+  <div>
 <h1 style="color:orange;">
   Jugadores activos
 </h1>
 <a href="{% url 'listar_jugadores' %}">Ver todos</a>
 <a href="{% url 'ingresar_jugador' %}">Ingresar un nuevo jugador</a>
 <br><br>
-<form action="{% url 'buscar_jugadores' %}" method="post">
-    {% csrf_token %}
-    <input type="text" name="busqueda">
-    <input type="submit" value="Buscar por nombre o apellido">
-</form>
-<br>
 
-
-<ul>
-{% for jugador in jugadores %}
-  <li>
-    {{ jugador.nombre }} {{ jugador.apellido }}
-  </li>
-{% endfor %}
-</ul>
+<table class="table">
+  <tbody>
+    <tr>
+      <th>Nombre</th>
+      <th>Apellido</th>
+      <th>Telefono</th>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    {% for jugador in jugadores %}
+    <tr>
+      <td>{{ jugador.nombre }}</td>
+      <td>{{ jugador.apellido }}</td>
+      <td>{{ jugador.telefono }}</td>
+      <td>
+        {% if user == jugador.creador %}
+        <a class="btn btn-link" href="{% url 'editar_jugador' jugador.id %}">editar</a>
+        {% endif %}
+      </td>
+      <td>
+        {% if user == jugador.creador %}
+        <form action="{% url 'eliminar_jugador' jugador.id %}" method="post">
+          {% csrf_token %}
+          <input type="submit" class="btn btn-link" value="eliminar"/>
+        </form>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 {% endblock contenido %}

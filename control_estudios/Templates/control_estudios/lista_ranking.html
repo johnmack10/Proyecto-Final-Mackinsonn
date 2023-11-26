@@ -1,16 +1,18 @@
+
+
 {% extends "base.html" %}
 
 {% block contenido %}
 <section>
  <div>
-   <h1>Lista del ranking</h1>
+   <h1 style="color:orange;">
+    Lista del ranking</h1>
    <a href="{% url 'crear_ranking' %}">Agregar jugador al ranking</a>
    <br>
 
    <table class="table">
      <tbody>
        <tr>
-         <th>ID</th>
          <th>Nombre</th>
          <th>Apellido</th>
          <th>Puntos</th>
@@ -20,7 +22,6 @@
        </tr>
        {% for participante in object_list %}
        <tr>
-         <td>{{ participante.id }}</td>
          <td>{{ participante.nombre }}</td>
          <td>{{ participante.apellido}}</td>
          <td>{{ participante.cantidad_puntos }}</td>
@@ -33,10 +34,10 @@
            {% endif %}
           </td>
          <td>
-          {% if user == participante.creador %}
-           <a href="{% url 'eliminar_ranking' participante.id %}">
-             <i class="bi bi-trash"></i>
-           </a>
+           {% if user == participante.creador %}
+            <a href="{% url 'eliminar_ranking' participante.id %}">
+              <i class="bi bi-trash"></i>
+            </a>
            {% endif %}
          </td>
        </tr>
@@ -47,3 +48,4 @@
  </div>
 </section>
 {% endblock contenido %}
+

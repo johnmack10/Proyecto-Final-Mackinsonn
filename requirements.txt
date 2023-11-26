@@ -1,8 +1,8 @@
 asgiref==3.7.2
 asttokens==2.4.0
-backcall==0.2.0 
-colorama==0.4.6 
-comm==0.1.4     
+backcall==0.2.0
+colorama==0.4.6
+comm==0.1.4
 debugpy==1.8.0
 decorator==5.1.1
 Django==4.2.6
@@ -17,6 +17,7 @@ nest-asyncio==1.5.8
 packaging==23.2
 parso==0.8.3
 pickleshare==0.7.5
+Pillow==10.1.0
 platformdirs==3.11.0
 prompt-toolkit==3.0.39
 psutil==5.9.5
